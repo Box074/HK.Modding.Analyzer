@@ -67,9 +67,11 @@ namespace HK.Modding.Analyzer
                 if (origType.TypeKind != TypeKind.Delegate) return;
                 if (!origType.Name.StartsWith("orig_")) return;
 
-
                 var callOrig = !string.IsNullOrEmpty(first.Name) && first.Name.StartsWith("_");
-                foreach (var c in md.DescendantNodes())
+                foreach (var c in md.DescendantNodes((node) =>
+                {
+                   return !node.GetDiagnostics().Any(x => x.Id == "CS0162");
+                }))
                 {
                     if (c is InvocationExpressionSyntax)
                     {
