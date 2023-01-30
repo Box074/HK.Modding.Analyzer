@@ -7,9 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HK.Modding.Analyzer", "HK.M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HK.Modding.Analyzer.Package", "HK.Modding.Analyzer\HK.Modding.Analyzer.Package\HK.Modding.Analyzer.Package.csproj", "{8483FFB6-4D2F-4CD1-983F-F28E790B2C78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMod", "TestMod\TestMod.csproj", "{0081362D-A66C-49A5-B197-323B2AE2DE99}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HK.Modding.Analyzer.Vsix", "HK.Modding.Analyzer\HK.Modding.Analyzer.Vsix\HK.Modding.Analyzer.Vsix.csproj", "{F41642C0-CA16-423B-808F-28513C15CA4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{ABA98B58-AA3E-43FE-8C8B-4E5AC5AFD18B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +28,6 @@ Global
 		{8483FFB6-4D2F-4CD1-983F-F28E790B2C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8483FFB6-4D2F-4CD1-983F-F28E790B2C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8483FFB6-4D2F-4CD1-983F-F28E790B2C78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0081362D-A66C-49A5-B197-323B2AE2DE99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0081362D-A66C-49A5-B197-323B2AE2DE99}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0081362D-A66C-49A5-B197-323B2AE2DE99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0081362D-A66C-49A5-B197-323B2AE2DE99}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F41642C0-CA16-423B-808F-28513C15CA4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F41642C0-CA16-423B-808F-28513C15CA4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F41642C0-CA16-423B-808F-28513C15CA4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
