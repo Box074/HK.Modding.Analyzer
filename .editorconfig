@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# HKM003: 在Mods加载完成前调用ModHooks.GetMod
+dotnet_diagnostic.HKM003.severity = warning

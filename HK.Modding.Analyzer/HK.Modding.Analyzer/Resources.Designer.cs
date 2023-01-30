@@ -124,7 +124,7 @@ namespace HK.Modding.Analyzer {
         }
         
         /// <summary>
-        ///   查找类似 Call ModHooks.GetMod before the mods are loaded 的本地化字符串。
+        ///   查找类似 Call ModHooks.{0} before the mods are loaded 的本地化字符串。
         /// </summary>
         public static string HKM003_Format {
             get {
@@ -133,7 +133,7 @@ namespace HK.Modding.Analyzer {
         }
         
         /// <summary>
-        ///   查找类似 Call ModHooks.GetMod before the mods are loaded 的本地化字符串。
+        ///   查找类似 Call ModHooks.{0} before the mods are loaded 的本地化字符串。
         /// </summary>
         public static string HKM003_Title {
             get {

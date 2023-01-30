@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Xml.Linq;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace HK.Modding.Analyzer
 {
@@ -27,15 +28,14 @@ namespace HK.Modding.Analyzer
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-
-            context.RegisterSymbolAction(SymbolAnalyzerModClass, SymbolKind.NamedType);
+            context.RegisterSyntaxNodeAction(SymbolAnalyzerModClass, SyntaxKind.ClassDeclaration);
         }
-        private static void SymbolAnalyzerCtor(IMethodSymbol method, SymbolAnalysisContext context)
+        private static void SymbolAnalyzerCtor(IMethodSymbol method, SyntaxNodeAnalysisContext context, SemanticModel seg)
         {
             var md = method.Locations[0].SourceTree.GetRoot().FindNode(method.Locations[0].SourceSpan);
             if (md is null) return;
             if (md is not ConstructorDeclarationSyntax) return;
-            var seg = context.Compilation.GetSemanticModel(md.SyntaxTree, false);
+            
             foreach (var node in md.DescendantNodes(x => !(x is (LambdaExpressionSyntax or LocalFunctionStatementSyntax))))
             {
                 if(node is InvocationExpressionSyntax invoke)
@@ -44,17 +44,18 @@ namespace HK.Modding.Analyzer
                     if (cm is null) continue;
                     if (cm.Name != "GetMod") continue;
                     if (cm.ContainingType.GetFullName() != "Modding.ModHooks") continue;
-                    context.ReportDiagnostic(Diagnostic.Create(GetModOnCtor, node.GetLocation()));
+                    context.ReportDiagnostic(Diagnostic.Create(GetModOnCtor, node.GetLocation(), cm.Name));
                 }
             }
         }
-        private static void SymbolAnalyzerModClass(SymbolAnalysisContext context)
+        private static void SymbolAnalyzerModClass(SyntaxNodeAnalysisContext context)
         {
-            var type = (INamedTypeSymbol)context.Symbol;
+            var type = (INamedTypeSymbol)context.ContainingSymbol;
             if (!type.AllInterfaces.Any(x => x.GetFullName() == "Modding.IMod")) return;
+            
             foreach (var ctor in type.GetMembers(".ctor").Concat(type.GetMembers(".cctor")).OfType<IMethodSymbol>())
             {
-                SymbolAnalyzerCtor(ctor, context);
+                SymbolAnalyzerCtor(ctor, context, context.SemanticModel);
             }
         }
     }

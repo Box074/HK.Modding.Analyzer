@@ -130,10 +130,10 @@
     <value>{0}泄漏</value>
   </data>
   <data name="HKM003_Format" xml:space="preserve">
-    <value>在Mods加载完成前调用ModHooks.GetMod</value>
+    <value>在Mods加载完成前调用ModHooks.{0}</value>
   </data>
   <data name="HKM003_Title" xml:space="preserve">
-    <value>在Mods加载完成前调用ModHooks.GetMod</value>
+    <value>在Mods加载完成前调用ModHooks.{0}</value>
   </data>
   <data name="HKM004_Format" xml:space="preserve">
     <value>使用{0}.UnsafeInstance代替{0}.instance判断{0}是否存在</value>

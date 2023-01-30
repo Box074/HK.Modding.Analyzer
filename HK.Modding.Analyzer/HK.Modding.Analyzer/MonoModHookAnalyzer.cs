@@ -47,37 +47,19 @@ namespace HK.Modding.Analyzer
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
+            context.RegisterSyntaxNodeAction(AnalyzeSymbol, SyntaxKind.MethodDeclaration, 
+                    SyntaxKind.SimpleLambdaExpression,
+                    SyntaxKind.LocalFunctionStatement,
+                    SyntaxKind.ParenthesizedLambdaExpression);
         }
-        private static void AnalyzeSymbol(IMethodSymbol method, Compilation compilation,
-            SymbolAnalysisContext context, SyntaxNode md)
+        private static void AnalyzeSymbol(IMethodSymbol method,
+            SyntaxNodeAnalysisContext context, SyntaxNode md)
         {
             try
             {
                 if (!method.IsDefinition) return;
-                
-                if (md is null)
-                {
-                    md = method.Locations[0].SourceTree.GetRoot().FindNode(method.Locations[0].SourceSpan);
-                    if(md is null) return;
-                    if (md is not MethodDeclarationSyntax) return;
-                }
-                var seg = compilation.GetSemanticModel(md.SyntaxTree, false);
-                foreach (var c in md.DescendantNodes())
-                {
-                    if (c is LambdaExpressionSyntax lambda)
-                    {
-                        var m = (IMethodSymbol)seg.GetSymbolInfo(lambda).Symbol;
-                        AnalyzeSymbol(m, compilation, context, c);
 
-                    }
-                    if (c is LocalFunctionStatementSyntax lf)
-                    {
-                        var m = (IMethodSymbol)seg.GetSymbolInfo(lf).Symbol;
-                        if(m is null) return;
-                        AnalyzeSymbol(m, compilation, context, c);
-                    }
-                }
+                var seg = context.SemanticModel;
                 if (method.Parameters.Length == 0) return;
                 var first = method.Parameters[0];
                 var origType = first.Type;
@@ -117,9 +99,9 @@ namespace HK.Modding.Analyzer
                 context.ReportDiagnostic(Diagnostic.Create(AnalyzerExcpetion, method.Locations[0], 0, e.ToString()));
             }
         }
-        private static void AnalyzeSymbol(SymbolAnalysisContext context)
+        private static void AnalyzeSymbol(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeSymbol((IMethodSymbol)context.Symbol, context.Compilation, context, null);
+            AnalyzeSymbol((IMethodSymbol)context.ContainingSymbol, context, context.Node);
         }
     }
 }
